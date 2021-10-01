@@ -1,0 +1,4 @@
+com\example\Application.class
+com\example\service\FruitRepository.class
+com\example\service\FruitController.class
+com\example\service\Fruit.class

@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="utf-8"/>
-    <title>CRUD Mission - Spring Boot</title>
+    <title>REST Mission - Spring Boot</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/wingcss/0.1.8/wing.min.css"/>
     <style>
         input[type=number] {
@@ -43,10 +43,10 @@
           var method = "";
           var url = "";
           var data = {};
-          if ($scope.form.id == -1) {
+          if ($scope.form.id === -1) {
             //Id is absent so add fruits - POST operation
             method = "POST";
-            url = '/api/fruits';
+            url = '/api/fruits/';
             data.name = $scope.form.name;
           } else {
             //If Id is present, it's edit operation - PUT operation
@@ -54,6 +54,8 @@
             url = '/api/fruits/' + $scope.form.id;
             data.name = $scope.form.name;
           }
+
+          console.log(data)
 
           $http({
             method: method,
@@ -79,7 +81,7 @@
           $scope.form.id = fruit.id;
         };
 
-          /* Private Methods */
+        /* Private Methods */
         //HTTP GET- get all fruits collection
         function _refreshPageData() {
           $http({
@@ -112,27 +114,29 @@
 <body ng-app="FruitManagement" ng-controller="FruitManagementController">
 
 <div class="container">
-    <h1>CRUD Mission - Spring Boot</h1>
-    <p>
-        This application demonstrates how a Spring Boot application implements a CRUD endpoint to manage <em>fruits</em>.
-        This management interface invokes the CRUD service endpoint, that interact with a PosgreSQL database using JDBC.
-    </p>
+    <h1>REST Mission - Spring Boot</h1>
+    <p>This application demonstrates how a Spring Boot application implements REST endpoints to manage <em>fruits</em>.</p>
 
-    <h3>Add/Edit a fruit</h3>
-    <form ng-submit="update()">
-        <div class="row">
-            <div class="col-6"><input type="text" placeholder="Name" ng-model="form.name" size="60"/></div>
-        </div>
-        <input type="submit" value="Save"/>
-    </form>
-
-    <h3>Fruit List</h3>
     <div class="row">
-        <div class="col-2">Name</div>
-    </div>
-    <div class="row" ng-repeat="fruit in fruits">
-        <div class="col-2">{{ fruit.name }}</div>
-        <div class="col-8"><a ng-click="edit( fruit )" class="btn">Edit</a> <a ng-click="remove( fruit )" class="btn">Remove</a>
+        <div class="col-6">
+            <h3>Add/Edit a fruit</h3>
+            <form ng-submit="update()">
+                <div class="row">
+                    <div><input type="text" placeholder="Name" ng-model="form.name" size="60"/></div>
+                </div>
+                <input type="submit" value="Save"/>
+            </form>
+        </div>
+
+        <div class="col-6">
+            <h3>Fruit List</h3>
+            <div class="row" ng-repeat="fruit in fruits">
+                <div class="col-2">{{fruit.name}}</div>
+                <div class="col-8">
+                    <a ng-click="remove(fruit)" class="btn">Remove</a>
+                    <a ng-click="edit(fruit)" class="btn">Edit</a>
+                </div>
+            </div>
         </div>
     </div>
 </div>
