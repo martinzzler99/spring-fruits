@@ -1,8 +1,6 @@
 package com.example.service;
 
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Repository;
+import org.springframework.data.repository.CrudRepository;
 
-@Repository
-public interface FruitRepository extends JpaRepository<Fruit, Long> {
+public interface FruitRepository extends CrudRepository<Fruit, Integer> {
 }
