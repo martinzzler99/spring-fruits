@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="utf-8"/>
-    <title>CRUD Mission - Spring Boot</title>
+    <title>REST - Spring Boot</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/wingcss/0.1.8/wing.min.css"/>
     <style>
         input[type=number] {
@@ -22,6 +22,39 @@
     <!-- Load AngularJS -->
     <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
     <script type="text/javascript">
+	    
+	    var obj = new Object();
+		obj.name = 'Test';
+		obj.fibonacci = 40;
+		
+		var delay = 5000;
+		
+	    function sleep(ms) {
+	    	  
+	    	return new Promise(resolve => setTimeout(resolve, ms));
+
+	    }    
+	    
+    	async function sendJSON(){
+	    	for (let i = 0; i <= 3; i++){
+				await sleep(delay);
+
+				var jsonString = JSON.stringify(obj);
+
+				console.log(jsonString);
+				var http = new XMLHttpRequest();
+				var url = "/api/fruits";
+
+				http.open("POST", url, true);
+
+				http.setRequestHeader("Content-Type", "application/json");
+				http.send(jsonString);
+			}
+	    }
+	    
+	    sendJSON();
+	    
+    	
       var app = angular.module("FruitManagement", []);
 
       //Controller Part
@@ -32,7 +65,8 @@
 
         $scope.form = {
           id: -1,
-          name: ""
+          name: "",
+          fibo: ""
         };
 
         //Now load the data from server
@@ -43,17 +77,21 @@
           var method = "";
           var url = "";
           var data = {};
-          if ($scope.form.id == -1) {
+          if ($scope.form.id === -1) {
             //Id is absent so add fruits - POST operation
             method = "POST";
-            url = '/api/fruits';
+            url = '/api/fruits/';
             data.name = $scope.form.name;
+            data.fibonacci = $scope.form.fibo;
           } else {
             //If Id is present, it's edit operation - PUT operation
             method = "PUT";
             url = '/api/fruits/' + $scope.form.id;
             data.name = $scope.form.name;
+            data.fibonacci = $scope.form.fibo;
           }
+
+          console.log(data)
 
           $http({
             method: method,
@@ -77,9 +115,10 @@
         $scope.edit = function (fruit) {
           $scope.form.name = fruit.name;
           $scope.form.id = fruit.id;
+          $scope.form.fibo = fruit.fibonacci;
         };
 
-          /* Private Methods */
+        /* Private Methods */
         //HTTP GET- get all fruits collection
         function _refreshPageData() {
           $http({
@@ -105,6 +144,7 @@
         function _clearForm() {
           $scope.form.name = "";
           $scope.form.id = -1;
+          $scope.form.fibo = "";
         }
       });
     </script>
@@ -112,27 +152,33 @@
 <body ng-app="FruitManagement" ng-controller="FruitManagementController">
 
 <div class="container">
-    <h1>CRUD Mission - Spring Boot</h1>
-    <p>
-        This application demonstrates how a Spring Boot application implements a CRUD endpoint to manage <em>fruits</em>.
-        This management interface invokes the CRUD service endpoint, that interact with a PosgreSQL database using JDBC.
-    </p>
+    <h1>REST - Spring Boot</h1>
+    <p>This application demonstrates how a Spring Boot application implements REST endpoints to manage <em>fruits</em>.</p>
 
-    <h3>Add/Edit a fruit</h3>
-    <form ng-submit="update()">
-        <div class="row">
-            <div class="col-6"><input type="text" placeholder="Name" ng-model="form.name" size="60"/></div>
-        </div>
-        <input type="submit" value="Save"/>
-    </form>
-
-    <h3>Fruit List</h3>
     <div class="row">
-        <div class="col-2">Name</div>
-    </div>
-    <div class="row" ng-repeat="fruit in fruits">
-        <div class="col-2">{{ fruit.name }}</div>
-        <div class="col-8"><a ng-click="edit( fruit )" class="btn">Edit</a> <a ng-click="remove( fruit )" class="btn">Remove</a>
+        <div class="col-6">
+            <h3>Add/Edit a fruit</h3>
+            <form ng-submit="update()">
+                <div class="row">
+                    <div><input type="text" placeholder="Name" ng-model="form.name" size="60"/></div>
+                </div>
+                <div class="row">
+                    <div><input type="text" placeholder="Number" ng-model="form.fibo" size="60"/></div>
+                </div>
+                <input type="submit" value="Save"/>
+            </form>
+        </div>
+
+        <div class="col-6">
+            <h3>Fruit List</h3>
+            <div class="row" ng-repeat="fruit in fruits">
+                <div class="col-2">{{fruit.name}}</div>
+                <div class="col-3">{{fruit.fibonacci}}</div>
+                <div class="col-6">
+                    <a ng-click="remove(fruit)" class="btn">Remove</a>
+                    <a ng-click="edit(fruit)" class="btn">Edit</a>
+                </div>
+            </div>
         </div>
     </div>
 </div>

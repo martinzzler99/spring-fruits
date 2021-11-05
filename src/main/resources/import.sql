@@ -1,3 +1,3 @@
-insert into fruit (name) values ('Cherry');
-insert into fruit (name) values ('Apple');
-insert into fruit (name) values ('Banana');
+insert into fruit (name, fibonacci) values ('Cherry', 2);
+insert into fruit (name, fibonacci) values ('Apple', 3);
+insert into fruit (name, fibonacci) values ('Banana', 4);
