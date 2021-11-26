@@ -1,8 +1,10 @@
 package com.example.service;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
@@ -10,9 +12,18 @@ import org.springframework.web.client.RestTemplate;
 @RestController
 public class RestSpringBootController {
 	
-	@RequestMapping("/hello")
+	private static final Logger logger = LoggerFactory.getLogger(RestSpringBootController.class);
+	
+	@GetMapping("/hello")
 	public String hello() {
-		return "Hello world";
+
+		logger.trace("A TRACE Message");
+        logger.debug("A DEBUG Message");
+        logger.info("An INFO Message");
+        logger.warn("A WARN Message");
+        logger.error("An ERROR Message");
+		
+		return "Hello Spring";
 	}
 	
 	@GetMapping(value = "/callclienthello")
@@ -23,9 +34,9 @@ public class RestSpringBootController {
 		return result;
 	}
 	
-	@GetMapping(value = "/countries")
+	@GetMapping(value = "/api/countries")
 	private List<Object> getCountries() {
-		String url = "https://restcountries.com/v3.1/all";
+		String url = "https://restcountries.com/v2/all";
 		RestTemplate restTemplate = new RestTemplate();
 		
 		Object[] countries = restTemplate.getForObject(url, Object[].class);
@@ -33,7 +44,7 @@ public class RestSpringBootController {
 		return Arrays.asList(countries);
 	}
 	
-	@GetMapping(value = "/crypto")
+	@GetMapping(value = "/api/crypto")
 	private List<Object> getCrypto() {
 		String url = "https://bitpay.com/api/rates";
 		RestTemplate restTemplate = new RestTemplate();

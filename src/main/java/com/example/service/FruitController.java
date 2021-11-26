@@ -1,10 +1,12 @@
 package com.example.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@Transactional
 @RestController
 @RequestMapping("/api/fruits")
 public class FruitController {
@@ -15,13 +17,13 @@ public class FruitController {
         public List<Fruit> getAll() {
             return repository.findAll();
         }
-
+            
         @GetMapping("/{id}")
         public Fruit getFruit(@PathVariable("id") Long id) {
             return repository.findById(id).orElse(null);
         }
 
-            @PostMapping
+        @PostMapping
         public Fruit createFruit(@RequestBody Fruit fruit) {
             return repository.save(fruit);
         }
